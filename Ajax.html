@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>products</title>
+    <style>
+        #container {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            justify-items: center;
+            transition: transform;
+            animation-direction: alternate
+        }
+
+        .item {
+            border: 1px solid brown;
+            color: brown;
+            border-radius: 5px;
+            font-size: 20px;
+            padding: 10px;
+            margin: 5px;
+            width: 200px;
+            height: 300px;
+            background-color: burlywood;
+            align-items: center;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        .input[name="input1"] {
+            font-size: 25px;
+            border-radius: 10px;
+            border: 1px lightgrey solid;
+            padding: 5px;
+        }
+
+        img {
+            width: 40%;
+            display: block;
+            transition: transform;
+            background-color: none;
+        }
+
+        .btn {
+            color: rgb(12, 27, 110);
+            font-size: 25px;
+            background-color: rgba(163, 228, 228, 0.441);
+            border-radius: 10px;
+            border: 1px lightgrey solid;
+            padding: 5px;
+            margin-left: 10px;
+            margin-top: 10px;
+        }
+
+        .first {
+            color: blueviolet;
+         
+        }
+        .second {
+            color: brown
+        }
+
+        #container:hover {
+            transform: scale(1);
+        }
+    </style>
+</head>
+
+<body>
+    <h1 style="text-align: left; color: lightcoral;">
+      Welcome Hend
+    </h1>
+    <h1 style="text-align: center; color: lightcoral;">
+        products
+    </h1>
+    <div><input name="input1" type="text" id="p">
+     
+        <button class="btn btn2">get product</button></div>
+    <div id="container"></div>
+    <div id="product-details"></div>
+    
+    <script>
+
+
+document.getElementsByClassName("btn2")[0].onclick = function () {
+      var input = document.querySelector("input[name=input1]")
+      var id = input.value
+      console.log(id);
+
+      var xhr2 = new XMLHttpRequest()
+      xhr2.open("GET",'https://fakestoreapi.com/products/'+ id)
+      xhr2.send()
+
+
+        xhr2.onreadystatechange = function () {
+        if (xhr2.readyState == 4 && xhr2.status == 200) {
+          var respJSON = xhr2.response
+
+          var product = JSON.parse(respJSON)
+        
+         window.location.href = "product.html?id=" + id;
+                
+          
+        }
+    }
+}
+        window.onload = function () {
+
+            var xhr = new XMLHttpRequest()
+
+            xhr.open("GET", "https://fakestoreapi.com/products")
+
+            xhr.send();
+
+            xhr.addEventListener("readystatechange", function () {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    // 5)
+                    var responseJSON = xhr.response
+                    // 6)
+                    var response = JSON.parse(responseJSON)
+                    //console.log(response)
+                    // 7)
+
+                    var divContainer = document.getElementById("container")
+                    for (var prd of response) {
+                        var name = prd.title
+                        var price = prd.price
+                        var img = prd.image
+                        var id = prd.id;
+                        var p = document.createElement("p")
+                        p.innerHTML = "<a href='product.html?id=" + id + "'>" +
+                            "<img src='" + img + "' width='100'>" +
+                            "<br> <span class='first'>" + name + "<span>" +
+                            "<br><br> <span class='second'>price  " + price + "$" + "<span>" +
+                            "</a>";
+                        p.setAttribute("class", "item")
+                        p.setAttribute("data-id", id);
+                        divContainer.appendChild(p)
+
+
+                    }
+                }
+            })
+        }
+        p.onclick = function () {
+            window.location.href = "product.html?id="+ id;
+        };
+
+
+
+    </script>
+</body>
+
+</html>
